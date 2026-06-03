@@ -1,0 +1,43 @@
+// ─── User & Auth Tables ──────────────────────────────────────
+export {
+  roleEnum,
+  userStatusEnum,
+  users,
+  roles,
+  permissions,
+  rolePermissions,
+  refreshTokens,
+  usersRelations,
+  rolePermissionsRelations,
+  refreshTokensRelations,
+} from './users';
+
+// ─── Academic Tables ─────────────────────────────────────────
+export {
+  attendanceStatusEnum,
+  examTypeEnum,
+  feeFrequencyEnum,
+  feeStatusEnum,
+  teachers,
+  classes,
+  sections,
+  students,
+  subjects,
+  teacherAssignments,
+  attendance,
+  assignments,
+  assignmentSubmissions,
+  exams,
+  examSubjects,
+  results,
+  feeStructures,
+  feeRecords,
+  announcements,
+  messages,
+  auditLogs,
+  teachersRelations,
+  studentsRelations,
+  classesRelations,
+  sectionsRelations,
+  teacherAssignmentsRelations,
+} from './academics';
