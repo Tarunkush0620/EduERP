@@ -82,10 +82,21 @@ export interface Student {
   classId: string;
   sectionId?: string;
   admissionDate: string;
+  parentId?: string; // Link to the new Parent record
   parentName?: string;
   parentPhone?: string;
   parentEmail?: string;
   user?: User;
+  parent?: Parent;
+}
+
+export interface Parent {
+  id: string;
+  userId: string;
+  occupation?: string;
+  address?: string;
+  user?: User;
+  children?: Student[];
 }
 
 export interface Class {
@@ -106,6 +117,21 @@ export interface Subject {
   id: string;
   name: string;
   code: string;
+}
+
+export interface Timetable {
+  id: string;
+  classId: string;
+  sectionId?: string;
+  subjectId: string;
+  teacherId: string;
+  dayOfWeek: number; // 0-6 (Sunday-Saturday)
+  startTime: string; // HH:mm format
+  endTime: string;   // HH:mm format
+  class?: Class;
+  section?: Section;
+  subject?: Subject;
+  teacher?: Teacher;
 }
 
 export interface Attendance {

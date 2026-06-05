@@ -26,6 +26,8 @@ import { AiModule } from './modules/ai/ai.module';
 // Common
 import { AllExceptionsFilter } from './common/filters/http-exception.filter';
 import { TransformInterceptor } from './common/interceptors/transform.interceptor';
+import { TimetablesModule } from './modules/timetables/timetables.module';
+import { ParentsModule } from './modules/parents/parents.module';
 
 @Module({
   imports: [
@@ -53,6 +55,8 @@ import { TransformInterceptor } from './common/interceptors/transform.intercepto
     FeesModule,
     CommunicationModule,
     AiModule,
+    TimetablesModule,
+    ParentsModule,
   ],
   providers: [
     // Global exception filter

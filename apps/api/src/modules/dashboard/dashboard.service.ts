@@ -137,4 +137,35 @@ export class DashboardService {
       ],
     };
   }
+
+  async getParentDashboard(userId: string) {
+    // Parent dashboard mock data. In future, fetch actual children data.
+    return {
+      overview: {
+        totalChildren: 2,
+        pendingFees: 45000,
+        unreadNotices: 3,
+      },
+      children: [
+        {
+          name: 'Aditya Kumar',
+          class: 'Class 10-A',
+          attendance: '96%',
+          nextExam: 'Mathematics (Tomorrow)',
+          pendingAssignments: 2,
+        },
+        {
+          name: 'Priya Kumar',
+          class: 'Class 8-C',
+          attendance: '98%',
+          nextExam: 'Science (In 3 days)',
+          pendingAssignments: 0,
+        }
+      ],
+      recentNotices: [
+        { title: 'Fee Payment Reminder', date: 'Today', type: 'warning' },
+        { title: 'Parent-Teacher Meeting', date: 'Next Friday', type: 'info' },
+      ]
+    };
+  }
 }

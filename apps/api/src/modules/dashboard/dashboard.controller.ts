@@ -29,4 +29,10 @@ export class DashboardController {
   getStudentDashboard(@CurrentUser() user: TokenPayload) {
     return this.dashboardService.getStudentDashboard(user.sub);
   }
+
+  @Get('parent')
+  @Roles(Role.PARENT)
+  getParentDashboard(@CurrentUser() user: TokenPayload) {
+    return this.dashboardService.getParentDashboard(user.sub);
+  }
 }

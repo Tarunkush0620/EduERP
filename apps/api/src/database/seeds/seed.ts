@@ -135,6 +135,23 @@ async function seed() {
       console.log(`  ✅ Demo Student created: ${studentEmail}`);
     }
 
+    // ── 7. Create Demo Parent ───────────────────────────────
+    const parentEmail = 'parent@eduerp.com';
+    const existingParent = await db.select().from(users).where(eq(users.email, parentEmail));
+    if (existingParent.length > 0) {
+      console.log(`  ↳ Parent "${parentEmail}" already exists`);
+    } else {
+      const passwordHash = await bcrypt.hash('Parent@123', 12);
+      await db.insert(users).values({
+        name: 'Demo Parent',
+        email: parentEmail,
+        passwordHash,
+        role: 'parent',
+        status: 'active',
+      });
+      console.log(`  ✅ Demo Parent created: ${parentEmail}`);
+    }
+
     console.log('\n🎉 Seed completed successfully!');
   } catch (error) {
     console.error('❌ Seed failed:', error);

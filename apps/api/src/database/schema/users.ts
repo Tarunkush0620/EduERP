@@ -2,7 +2,7 @@ import { pgTable, uuid, varchar, text, timestamp, pgEnum, boolean } from 'drizzl
 import { relations } from 'drizzle-orm';
 
 // ─── Enums ───────────────────────────────────────────────────
-export const roleEnum = pgEnum('user_role', ['super_admin', 'teacher', 'student']);
+export const roleEnum = pgEnum('user_role', ['super_admin', 'teacher', 'parent', 'student']);
 export const userStatusEnum = pgEnum('user_status', ['active', 'suspended', 'inactive']);
 
 // ─── Users ───────────────────────────────────────────────────
@@ -62,6 +62,10 @@ export const usersRelations = relations(users, ({ one, many }) => ({
     fields: [users.id],
     references: [students.userId],
   }),
+  parentProfile: one(parents, {
+    fields: [users.id],
+    references: [parents.userId],
+  }),
   refreshTokens: many(refreshTokens),
 }));
 
@@ -85,4 +89,4 @@ export const refreshTokensRelations = relations(refreshTokens, ({ one }) => ({
 
 // ─── Forward declarations for relations (defined in academics.ts) ──
 // These are imported here for relation definitions
-import { teachers, students } from './academics';
+import { teachers, students, parents } from './academics';

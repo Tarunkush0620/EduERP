@@ -222,6 +222,17 @@ export default function LoginPage() {
                   <Users size={14} />
                   <span>Student</span>
                 </button>
+                <button
+                  type="button"
+                  className="login-demo-btn"
+                  onClick={() => {
+                    setEmail('parent@eduerp.com');
+                    setPassword('Parent@123');
+                  }}
+                >
+                  <Users size={14} />
+                  <span>Parent</span>
+                </button>
               </div>
             </div>
           </div>
@@ -489,7 +500,7 @@ export default function LoginPage() {
 
         .login-demo-grid {
           display: grid;
-          grid-template-columns: 1fr 1fr 1fr;
+          grid-template-columns: 1fr 1fr 1fr 1fr;
           gap: 0.5rem;
         }
 

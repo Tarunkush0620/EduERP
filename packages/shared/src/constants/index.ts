@@ -21,6 +21,11 @@ export const API_ROUTES = {
     PROMOTE: (id: string) => `/students/${id}/promote`,
     TRANSFER: (id: string) => `/students/${id}/transfer`,
   },
+  PARENTS: {
+    BASE: '/parents',
+    BY_ID: (id: string) => `/parents/${id}`,
+    STUDENTS: '/parents/students', // get children for logged in parent
+  },
   CLASSES: {
     BASE: '/classes',
     BY_ID: (id: string) => `/classes/${id}`,
@@ -29,6 +34,12 @@ export const API_ROUTES = {
   SUBJECTS: {
     BASE: '/subjects',
     BY_ID: (id: string) => `/subjects/${id}`,
+  },
+  TIMETABLES: {
+    BASE: '/timetables',
+    BY_ID: (id: string) => `/timetables/${id}`,
+    BY_CLASS: (classId: string) => `/timetables/class/${classId}`,
+    BY_TEACHER: (teacherId: string) => `/timetables/teacher/${teacherId}`,
   },
   ATTENDANCE: {
     MARK: '/attendance/mark',
@@ -68,6 +79,7 @@ export const API_ROUTES = {
   DASHBOARD: {
     ADMIN: '/dashboard/admin',
     TEACHER: '/dashboard/teacher',
+    PARENT: '/dashboard/parent',
     STUDENT: '/dashboard/student',
   },
 } as const;

@@ -37,6 +37,16 @@ export const sections = pgTable('sections', {
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
 });
 
+// ─── Parents ───────────────────────────────────────────────────
+export const parents = pgTable('parents', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  userId: uuid('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }).unique(),
+  occupation: varchar('occupation', { length: 100 }),
+  address: text('address'),
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+});
+
 // ─── Students ────────────────────────────────────────────────
 export const students = pgTable('students', {
   id: uuid('id').primaryKey().defaultRandom(),
@@ -44,6 +54,7 @@ export const students = pgTable('students', {
   rollNumber: varchar('roll_number', { length: 50 }).notNull(),
   classId: uuid('class_id').notNull().references(() => classes.id),
   sectionId: uuid('section_id').references(() => sections.id),
+  parentId: uuid('parent_id').references(() => parents.id),
   admissionDate: date('admission_date').notNull(),
   parentName: varchar('parent_name', { length: 100 }),
   parentPhone: varchar('parent_phone', { length: 20 }),
@@ -68,6 +79,19 @@ export const teacherAssignments = pgTable('teacher_assignments', {
   classId: uuid('class_id').notNull().references(() => classes.id, { onDelete: 'cascade' }),
   subjectId: uuid('subject_id').notNull().references(() => subjects.id, { onDelete: 'cascade' }),
   sectionId: uuid('section_id').references(() => sections.id),
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+});
+
+// ─── Timetables (Schedules) ──────────────────────────────────
+export const timetables = pgTable('timetables', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  classId: uuid('class_id').notNull().references(() => classes.id, { onDelete: 'cascade' }),
+  sectionId: uuid('section_id').references(() => sections.id),
+  subjectId: uuid('subject_id').notNull().references(() => subjects.id, { onDelete: 'cascade' }),
+  teacherId: uuid('teacher_id').notNull().references(() => teachers.id, { onDelete: 'cascade' }),
+  dayOfWeek: integer('day_of_week').notNull(), // 0 = Sunday, 1 = Monday, etc.
+  startTime: varchar('start_time', { length: 5 }).notNull(), // HH:mm format e.g. "09:00"
+  endTime: varchar('end_time', { length: 5 }).notNull(), // HH:mm format e.g. "10:00"
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
 });
 
@@ -210,10 +234,22 @@ export const teachersRelations = relations(teachers, ({ one, many }) => ({
   assignments: many(teacherAssignments),
 }));
 
+export const parentsRelations = relations(parents, ({ one, many }) => ({
+  user: one(users, {
+    fields: [parents.userId],
+    references: [users.id],
+  }),
+  children: many(students),
+}));
+
 export const studentsRelations = relations(students, ({ one, many }) => ({
   user: one(users, {
     fields: [students.userId],
     references: [users.id],
+  }),
+  parent: one(parents, {
+    fields: [students.parentId],
+    references: [parents.id],
   }),
   class: one(classes, {
     fields: [students.classId],
@@ -233,6 +269,7 @@ export const classesRelations = relations(classes, ({ many }) => ({
   sections: many(sections),
   students: many(students),
   teacherAssignments: many(teacherAssignments),
+  timetables: many(timetables),
 }));
 
 export const sectionsRelations = relations(sections, ({ one, many }) => ({
@@ -259,5 +296,24 @@ export const teacherAssignmentsRelations = relations(teacherAssignments, ({ one 
   section: one(sections, {
     fields: [teacherAssignments.sectionId],
     references: [sections.id],
+  }),
+}));
+
+export const timetablesRelations = relations(timetables, ({ one }) => ({
+  class: one(classes, {
+    fields: [timetables.classId],
+    references: [classes.id],
+  }),
+  section: one(sections, {
+    fields: [timetables.sectionId],
+    references: [sections.id],
+  }),
+  subject: one(subjects, {
+    fields: [timetables.subjectId],
+    references: [subjects.id],
+  }),
+  teacher: one(teachers, {
+    fields: [timetables.teacherId],
+    references: [teachers.id],
   }),
 }));
